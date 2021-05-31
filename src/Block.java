@@ -10,20 +10,17 @@ public class Block {
     private int nonce;
 
     /**
-     * The constructor for the Block class. This constructor requires each variable declared in the Block class to be
-     * initially declared.
-     * @param hash The initial value for the hash of the new Block.
+     * The constructor for the Block class. The constructor requires only 3 values: the previous hash, the data that the
+     * block contains, and a timestamp for the block.
      * @param lastHash The initial value for the previous hash of the new Block.
      * @param data The initial value for the data of the new Block.
      * @param timeStamp The initial value for the timestamp of the new Block.
-     * @param nonce The initial value for the nonce of the new Block.
      */
-    public Block(String hash, String lastHash, String data, long timeStamp, int nonce) {
-        this.hash = hash;
+    public Block(String lastHash, String data, long timeStamp) {
         this.lastHash = lastHash;
         this.data = data;
         this.timeStamp = timeStamp;
-        this.nonce = nonce;
+        this.hash = calculateBlockHash();
     }
 
     /**
@@ -53,8 +50,8 @@ public class Block {
      * number.
      */
     public String calculateBlockHash() {
-        String dataToHash = lastHash + Long.toString(timeStamp) + Integer.toString(nonce) + data;
-        MessageDigest digest = null;
+        String dataToHash = lastHash + timeStamp + nonce + data;
+        MessageDigest digest;
         byte[] bytes = null;
 
         try {
